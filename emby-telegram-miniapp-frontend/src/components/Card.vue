@@ -1,143 +1,196 @@
 <template>
   <div
     class="card"
-    :class="{ selected: isSelected }"
     :style="{ backgroundColor: color }"
-    @click="toggleSelect"
+    @click="navigate"
   >
-    <!-- 左上角图标 -->
-    <div class="icon-wrapper">
-      <i :class="icon"></i>
+    <div class="card-content">
+      <!-- 左侧图标 -->
+      <div class="card-icon-wrapper">
+        <el-icon class="card-icon"><component :is="getIconComponent()" /></el-icon>
+      </div>
+      
+      <!-- 中间内容 -->
+      <div class="card-text-wrapper">
+        <div class="card-title">{{ title }}</div>
+        <div v-if="value" class="card-value">{{ value }} <span v-if="bottomLeftText" class="card-bottom-text">{{ bottomLeftText }}</span></div>
+      </div>
+      
+      <!-- 右侧箭头 -->
+      <el-icon class="arrow-icon"><ArrowRight /></el-icon>
     </div>
-
-    <!-- 右上角跳转 -->
-    <router-link v-if="topRightLink" :to="topRightLink" class="top-right">
-      {{ topRightText }}
-      <i class="icon-arrow"></i>
-    </router-link>
-
-    <!-- 主要内容 -->
-    <div class="content">
-      <h3>{{ title }}</h3>
-      <p v-if="value">{{ value }}</p>
-    </div>
-
-    <!-- 左下角操作按钮 -->
-    <router-link v-if="bottomLeftLink" :to="bottomLeftLink" class="bottom-left">
-      {{ bottomLeftText }}
-      <i class="icon-arrow"></i>
-    </router-link>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { Location, User, Platform, DataAnalysis, Search, ArrowRight, Edit } from '@element-plus/icons-vue';
 
-defineProps({
+const props = defineProps({
   title: String,           // 标题
   value: String,           // 主要数值（可选）
   color: String,           // 背景颜色
-  icon: String,            // 左上角图标
-  topRightText: String,    // 右上角文字
-  topRightLink: String,    // 右上角跳转链接
-  bottomLeftText: String,  // 左下角文字
-  bottomLeftLink: String,  // 左下角跳转链接
+  icon: String,            // 图标名称
+  link: String,            // 跳转链接（可选）
+  bottomLeftText: String,  // 底部左侧文本（例如"灵石"）
 });
 
-// 控制选中状态
-const isSelected = ref(false);
+const router = useRouter();
 
-const toggleSelect = () => {
-  isSelected.value = !isSelected.value;
+// 导航到目标页面
+const navigate = () => {
+  if (props.link) {
+    router.push(props.link);
+  }
+};
+
+// 根据icon属性获取对应的图标组件
+const getIconComponent = () => {
+  switch (props.icon) {
+    case 'location':
+      return Location;
+    case 'user':
+      return User;
+    case 'server':
+      return Platform;
+    case 'database':
+      return DataAnalysis;
+    case 'search':
+      return Search;
+    case 'edit':
+      return Edit;
+    default:
+      return Location;
+  }
 };
 </script>
 
 <style scoped>
 .card {
   position: relative;
-  padding: 20px;
-  border-radius: 10px;
+  border-radius: 15px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
   color: black;
-  min-width: 150px;
-  min-height: 150px;
+  min-height: 80px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1); /* 加一个默认的阴影 */
+  overflow: hidden;
+  margin-bottom: 10px;
+  padding: 15px;
+  user-select: none;
 }
 
-/* 悬停时放大 & 增加阴影 */
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+.card:active {
+  transform: scale(0.98);
+  opacity: 0.9;
 }
 
-/* 选中状态 */
-.selected {
-  border: 3px solid #007bff;
-  background-color: #d0e7ff !important;
-  transform: scale(1.08);
+.card-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
-/* 左上角图标 */
-.icon-wrapper {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 36px;
-  height: 36px;
-  background: rgba(0, 0, 0, 0.1);
+.card-icon-wrapper {
+  margin-right: 15px;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon i, .card-icon .el-icon {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.card-text-wrapper {
+  flex: 1;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.card-value {
+  margin: 5px 0 0;
+  font-size: 28px;
+  font-weight: bold;
+  display: flex;
+  align-items: baseline;
+}
+
+.card-bottom-text {
+  font-size: 14px;
+  margin-left: 5px;
+  opacity: 0.7;
+  font-weight: normal;
+}
+
+.arrow-icon {
+  margin-left: 10px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-icon .el-icon {
+  font-size: 20px;
+  opacity: 0.7;
+}
+
+/* 卡片底部动作链接 */
+.bottom-action {
+  position: absolute;
+  bottom: 10px;
+  left: 55px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  opacity: 0.8;
   transition: all 0.3s ease;
 }
 
-/* 悬浮图标效果 */
-.icon-wrapper:hover {
-  background: rgba(0, 0, 0, 0.2);
-  transform: scale(1.1);
+.bottom-action:hover {
+  opacity: 1;
 }
 
-/* 右上角跳转 */
-.top-right {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.bottom-action .el-icon {
   font-size: 14px;
-  text-decoration: none;
-  color: #007bff;
-  font-weight: 500;
-  transition: color 0.3s ease;
 }
 
-.top-right:hover {
-  color: #0056b3;
+/* 不同颜色的卡片 */
+.green {
+  background-color: #a4dd00;
 }
 
-/* 左下角按钮 */
-.bottom-left {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  font-size: 14px;
-  text-decoration: none;
-  color: #007bff;
-  font-weight: 500;
-  transition: color 0.3s ease;
+.purple {
+  background-color: #c490e4;
 }
 
-.bottom-left:hover {
-  color: #0056b3;
+.pink {
+  background-color: #ffb6c1;
 }
 
-/* 箭头图标 */
-.icon-arrow {
-  margin-left: 5px;
-  font-size: 12px;
+.cyan {
+  background-color: #8ee5ee;
+}
+
+.yellow {
+  background-color: #f8e45c;
 }
 </style>
