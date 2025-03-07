@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="navigation" v-if="showNav">
       <router-link to="/" class="nav-link">首页</router-link>
-      <router-link to="/similar" class="nav-link">类似布局</router-link>
+      <!-- <router-link to="/similar" class="nav-link">类似布局</router-link> -->
       <router-link to="/profile" class="nav-link">个人</router-link>
     </div>
     <router-view/>

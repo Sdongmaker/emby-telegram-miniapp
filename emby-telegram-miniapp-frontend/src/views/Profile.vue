@@ -11,11 +11,11 @@
           <i class="icon-lock"></i>
           <p>账户密码: ********</p>
         </div>
-        <div class="card">
+        <!-- <div class="card">
           <i class="icon-clock"></i>
           <p>剩余可用时间: 30 天</p>
-        </div>
-        <button class="logout-btn">退出登录</button>
+        </div> -->
+        <button class="logout-btn">转移主账户</button>
       </div>
     </div>
   </template>

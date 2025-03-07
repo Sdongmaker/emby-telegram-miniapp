@@ -3,16 +3,17 @@
     <NavBar />
     <div class="content">
       <!-- LOGO区域 -->
-      <div class="logo-area">
-        <div class="aurora-title">起点站</div>
-      </div>
       
+      
+      <!-- 第一行卡片 - 签到和账户余额 -->
       <div class="grid">
-        <!-- 左侧卡片区域 -->
-        <div class="column">
-          <!-- 签到卡片 -->
-          <div class="card sign-in-card">
-            <div class="card-header">
+        <!-- 左侧 - 签到卡片 -->
+        <div class="large-card sign-in-card">
+          <div class="card-header">
+            <div class="card-title-wrapper">
+              <h3 class="card-title">签到</h3>
+            </div>
+            <div class="header-icons">
               <div class="icon-circle">
                 <el-icon><Location /></el-icon>
               </div>
@@ -20,15 +21,50 @@
                 <el-icon><ArrowRight /></el-icon>
               </div>
             </div>
-            <div class="card-body center-align">
-              <div class="card-title">签到</div>
-              <div class="large-value">68<span class="unit">灵石</span></div>
+          </div>
+          <div class="card-body center-align">
+            <div class="large-value">68<span class="unit">灵石</span></div>
+          </div>
+        </div>
+        
+        <!-- 右侧 - 账户余额卡片 -->
+        <div class="large-card balance-card">
+          <div class="card-header">
+            <div class="card-title-wrapper">
+              <h3 class="card-title">账户余额</h3>
+            </div>
+            <div class="icon-circle">
+              <el-icon><User /></el-icon>
             </div>
           </div>
-
-          <!-- 公益项目卡片 -->
-          <div class="card charity-card" @click="goToCharity">
-            <div class="card-header">
+          
+          <div class="balance-display">
+            <div class="balance-amount">¥ 50.00</div>
+          </div>
+          
+          <div class="action-buttons">
+            <div class="action-button" @click="openRechargeDialog">
+              <el-icon><Plus /></el-icon>
+              <span>余额充值</span>
+            </div>
+            <div class="action-button" @click="openPasswordDialog">
+              <el-icon><Lock /></el-icon>
+              <span>修改密码</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 第二行卡片 - 公益项目和Emby状态 -->
+      <div class="grid second-row">
+        <!-- 左侧 - 公益项目卡片 -->
+        <div class="small-card charity-card" @click="goToCharity">
+          <div class="card-header">
+            <div class="card-title-wrapper">
+              <h3 class="card-title">公益项目</h3>
+              <div class="card-subtitle">参与公益，奉献爱心</div>
+            </div>
+            <div class="header-icons">
               <div class="icon-circle">
                 <el-icon><Star /></el-icon>
               </div>
@@ -36,63 +72,32 @@
                 <el-icon><ArrowRight /></el-icon>
               </div>
             </div>
-            <div class="card-body">
-              <div class="charity-title">公益项目</div>
-              <div class="charity-subtitle">参与公益，奉献爱心</div>
-            </div>
           </div>
         </div>
         
-        <!-- 右侧卡片区域 -->
-        <div class="column">
-          <!-- 账户余额卡片 -->
-          <div class="card balance-card">
-            <div class="card-header">
-              <div class="card-title-area">
-                <div class="card-title">账户余额</div>
-                <div class="card-value">可用</div>
-              </div>
-              <div class="icon-circle large-circle">
-                <el-icon><User /></el-icon>
-              </div>
+        <!-- 右侧 - Emby状态卡片 -->
+        <div class="small-card emby-card">
+          <div class="card-header">
+            <div class="card-title-wrapper">
+              <h3 class="card-title">Emby状态</h3>
+              <div class="status-text">可用</div>
             </div>
-            
-            <div class="action-buttons">
-              <div class="action-button" @click="openRechargeDialog">
-                <el-icon><Plus /></el-icon>
-                <span>余额充值</span>
-              </div>
-              <div class="action-button" @click="openPasswordDialog">
-                <el-icon><Lock /></el-icon>
-                <span>修改密码</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Emby状态卡片 -->
-          <div class="card emby-card">
-            <div class="card-header">
-              <div class="card-title-area">
-                <div class="card-title">Emby状态</div>
-                <div class="card-value">可用</div>
-              </div>
-              <div class="icon-circle large-circle">
-                <el-icon><Platform /></el-icon>
-              </div>
+            <div class="icon-circle">
+              <el-icon><Platform /></el-icon>
             </div>
           </div>
         </div>
       </div>
       
-      <!-- 第二行 - 小卡片 -->
-      <div class="small-cards">
+      <!-- 第三行 - 小卡片 -->
+      <div class="grid">
         <Card 
           title="探针" 
           color="#80deea"
           icon="database" 
         />
         <Card 
-          title="求片" 
+          title="求片"
           color="#fff59d"
           icon="search" 
         />
@@ -378,14 +383,12 @@ const goToCharity = () => {
   margin-bottom: 15px;
 }
 
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.second-row {
+  margin-bottom: 15px;
 }
 
 /* 卡片通用样式 */
-.card {
+.large-card, .small-card {
   border-radius: 20px;
   padding: 15px;
   display: flex;
@@ -398,13 +401,26 @@ const goToCharity = () => {
 .card-header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  height: auto;
+  width: 100%;
+}
+
+.header-icons {
+  display: flex;
   align-items: center;
-  height: 40px;
+  gap: 8px;
+}
+
+.card-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .icon-circle {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.1);
   display: flex;
@@ -412,27 +428,21 @@ const goToCharity = () => {
   justify-content: center;
 }
 
-.large-circle {
-  width: 50px;
-  height: 50px;
-  background: rgba(255, 255, 255, 0.2);
-}
-
 .icon-circle .el-icon {
-  font-size: 22px;
+  font-size: 20px;
   color: rgba(0, 0, 0, 0.7);
 }
 
 .arrow-icon {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .arrow-icon .el-icon {
-  font-size: 22px;
+  font-size: 20px;
   color: rgba(0, 0, 0, 0.6);
 }
 
@@ -440,7 +450,7 @@ const goToCharity = () => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .center-align {
@@ -449,18 +459,22 @@ const goToCharity = () => {
 }
 
 .card-title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.8);
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
 }
 
-.card-value {
-  font-size: 18px;
-  color: rgba(0, 0, 0, 0.6);
-  margin-top: 4px;
+.status-text {
+  font-size: 20px;
+  color: #42A5F5;
+  font-weight: 500;
+  margin-top: 5px;
 }
 
-.card-desc {
+.card-subtitle {
   font-size: 14px;
   color: rgba(0, 0, 0, 0.6);
   margin-top: 5px;
@@ -473,10 +487,10 @@ const goToCharity = () => {
 }
 
 .large-value {
-  font-size: 48px;
+  font-size: 52px;
   font-weight: 700;
   line-height: 1;
-  margin-top: 10px;
+  margin-top: 15px;
   color: rgba(0, 0, 0, 0.8);
 }
 
@@ -492,6 +506,8 @@ const goToCharity = () => {
   cursor: pointer;
   transition: all 0.3s ease;
   height: 100px;
+  display: flex;
+  align-items: center;
 }
 
 .charity-card:hover {
@@ -499,33 +515,28 @@ const goToCharity = () => {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-.charity-card .card-body {
-  margin-top: 0;
-  justify-content: center;
-}
-
-.charity-title {
-  font-size: 22px;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.8);
-}
-
-.charity-subtitle {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
-  margin-top: 5px;
-}
-
 /* 账户余额卡片 */
 .balance-card {
   background-color: #dcb0ff;
   height: 160px;
   position: relative;
-}
-
-.card-title-area {
   display: flex;
   flex-direction: column;
+}
+
+.balance-display {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 45px; /* 为底部按钮留出空间 */
+}
+
+.balance-amount {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
 }
 
 /* 按钮区域 */
@@ -542,10 +553,10 @@ const goToCharity = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  padding: 10px 12px;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 30px;
+  gap: 6px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
   flex: 1;
@@ -557,13 +568,13 @@ const goToCharity = () => {
 }
 
 .action-button span {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.8);
 }
 
 .action-button:hover {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.12);
   transform: translateY(-2px);
 }
 
@@ -571,50 +582,8 @@ const goToCharity = () => {
 .emby-card {
   background-color: #ffb6c1;
   height: 100px;
-}
-
-/* 小卡片样式 */
-.small-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin: 0 15px;
-  margin-bottom: 15px;
-}
-
-.small-cards :deep(.card:first-child) {
-  background: #80deea; /* 蓝绿色 */
-}
-
-.small-cards :deep(.card:last-child) {
-  background: #fff59d; /* 黄色 */
-}
-
-.small-cards :deep(.card) {
-  height: 70px;
-  border-radius: 30px;
   display: flex;
   align-items: center;
-}
-
-.small-cards :deep(.card-content) {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.small-cards :deep(.card-title) {
-  font-size: 22px;
-  font-weight: 600;
-}
-
-.small-cards :deep(.card-icon-wrapper) {
-  width: 40px;
-  height: 40px;
-}
-
-.small-cards :deep(.arrow-icon) {
-  margin-left: auto;
 }
 
 /* 底部按钮 */
