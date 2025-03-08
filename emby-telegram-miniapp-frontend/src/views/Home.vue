@@ -23,7 +23,7 @@
             </div>
           </div>
           <div class="card-body center-align">
-            <div class="large-value">68<span class="unit">灵石</span></div>
+            <div class="large-value">68<span class="unit">积分</span></div>
           </div>
         </div>
         
